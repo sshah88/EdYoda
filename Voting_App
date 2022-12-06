@@ -1,0 +1,31 @@
+ Vote pod deletion:
+ No impact. Replica set replaces the deleted pod with the new one.
+
+Worker pod deletion:
+No impact. Replica set replaces deleted pod. No loss of data. Logs are lost for the deleted worker pod.
+
+DB pod deletion: 
+DB pod was immediately replaced by replica set. Voting page had no impact, but the Result page is broken with no votes reflected. 
+Can see that worker pod restarted post db deletion/reactivation.
+Since old db was deleted, all the previous data is lost with it.
+See from worker and Db logs that new data (votes) are reflected and worker pushes it to DB.
+Since flow seems to be ok till DB.
+Flow between Result app and DB needs to be fixed.
+Deletion of result pod fixes the issue.
+
+
+
+
+
+Commands used:
+kubectl delete po vote-94849dc97-s9k9p
+kubectl delete po worker-dd46d7584-fgl7j
+kubectl get po
+kubectl logs worker-dd46d7584-ddnzx
+kubectl logs db-b54cd94f4-q5llg
+kubectl delete po result-5d57b59f4b-p2zkx
+
+
+
+
+
